@@ -6,7 +6,6 @@ export default class InvoiceService {
             return invoices ? invoices : [];
         } catch (error) {
             console.log(error);
-            
         }
     }
 
@@ -51,6 +50,13 @@ export default class InvoiceService {
             console.error('Error al actualizar la factura:', error);
             throw error;
         }
-        
+    }
+    async getByStatus(status) {
+        try {
+            const invoices = await Invoice.findAll({ where: { status } });
+            return invoices ? invoices : null;
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

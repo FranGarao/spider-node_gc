@@ -36,4 +36,13 @@ export default class CustomerService {
             console.log(error);
         }
     }
+    async delete(id) {
+        try {
+            if (!id) return null;
+            const deletedCustomer = await Customer.destroy({ where: { id } });
+            return deletedCustomer ? deletedCustomer : null;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }

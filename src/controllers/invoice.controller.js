@@ -54,4 +54,15 @@ export default class InvoiceController {
             res.status(500).json({ message: "Error CON-INV-UPD" });
         }
     }
+    async getByStatus(req, res){
+        try {
+            const status = req.params.status;
+            const jobs = await invoiceService.getByStatus(status);
+            jobs ? res.status(200).json({ message: "Listado de trabajos", jobs }) :
+            res.status(500).json({ message: "No se encontraron trabajos" });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: "Error CON-JOB-BYS" });
+        }
+    }
 }

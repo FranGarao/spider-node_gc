@@ -12,4 +12,6 @@ route.post('/', customerController.create);
 
 route.put('/:id', customerController.update);
 
+route.delete('/:id', customerController.delete);
+
 export default route;

@@ -8,8 +8,11 @@ route.get('/', invoiceController.getAll);
 
 route.get('/:id', invoiceController.getById);
 
+route.get('/status/:status', invoiceController.getByStatus);
+
 route.post('/:id', invoiceController.create);
 
 route.put('/:id', invoiceController.update);
+
 
 export default route;

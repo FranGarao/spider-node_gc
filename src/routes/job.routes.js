@@ -6,4 +6,12 @@ const jobController = new JobController();
 
 route.get('/', jobController.getAll);
 
+route.get('/:id', jobController.getById);
+
+route.post('/', jobController.create);
+
+route.put('/:id', jobController.update);
+
+route.delete('/:id', jobController.delete);
+
 export default route;

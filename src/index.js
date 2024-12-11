@@ -21,9 +21,9 @@ app.use(express.json());
 const apiRouter = express.Router();
 
 apiRouter.use('/invoices', invoiceRoute);
-apiRouter.use('/api/users', userRoute);
-apiRouter.use('/api/customer', customerRoute);
-apiRouter.use('/api/jobs', jobRoute);
+apiRouter.use('/users', userRoute);
+apiRouter.use('/customers', customerRoute);
+apiRouter.use('/jobs', jobRoute);
 
 app.use('/api', apiRouter);
 

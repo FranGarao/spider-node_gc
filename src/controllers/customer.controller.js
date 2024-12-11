@@ -65,4 +65,20 @@ export default class CustomerController {
             res.status(500).json({ message: "Error CON-CUS-UPD" });
         }
     }
+
+    async delete(req,res){
+        try {
+            if (!req.params.id) return;
+            const id = req.params.id;
+            const customer = await customerService.delete(id);
+            if (!customer) {
+                res.status(500).json({ message: "No se pudo eliminar el usuario" });
+                return;
+            }
+            res.status(200).json({ message: "Usuario eliminado", customer });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: "Error CON-CUS-DEL" });
+        }
+    }
 }
