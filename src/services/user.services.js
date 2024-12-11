@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
 import User from "../db/models/user.model.js";
 export default class UserService {
-    async login(user) {
+    async login(res, user) {
         try {
+            
             if (!user) return null;
             //TODO: encriptar la pw
             const foundUser = await User.findOne({ where: { username: user.username, password: user.password } });
@@ -11,7 +12,7 @@ export default class UserService {
 
             const token = this.generateToken(foundUser);
 
-            this.setCookies(token);
+            this.setCookies(res, token);
             return { username: user.username, authenticated: true };
         } catch (error) {
             console.log(error);
@@ -40,10 +41,23 @@ export default class UserService {
     }
 
     // Métodos para simular cookies
-    setCookies(token) {
-        console.log("Seteando cookies con token:", token);
+    setCookies(res, token) {
+        const isProduction = process.env.NODE_ENV === 'production';
+        res.cookie('authToken', token, {
+            httpOnly: true, // Solo accesible por el servidor, no por JavaScript del cliente
+            secure: isProduction, // Requiere HTTPS en producción
+            sameSite: isProduction ? 'strict' : 'lax', // O 'lax', dependiendo del flujo de tu aplicación
+            maxAge: 24 * 60 * 60 * 1000 // 24 horas
+        });
     }
-    clearCookies(){
-        console.log("limpiando cookies...");
+    clearCookies(res) {
+        console.log("HOLA");
+        
+        res.clearCookie('authToken', {
+            httpOnly: true, // Debe coincidir con la configuración al establecer la cookie
+            secure: process.env.NODE_ENV === 'production', // Solo HTTPS en producción
+            sameSite: 'strict', // Igual que cuando se creó
+        });
+        console.log('Cookie authToken eliminada');
     }
 }
