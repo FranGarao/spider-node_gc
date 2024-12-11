@@ -6,7 +6,6 @@ export default class UserService {
             if (!user) return null;
             //TODO: encriptar la pw
             const foundUser = await User.findOne({ where: { username: user.username, password: user.password } });
-            console.log({foundUser});
             
             if (!foundUser) return null;
 
@@ -16,22 +15,22 @@ export default class UserService {
             return { username: user.username, authenticated: true };
         } catch (error) {
             console.log(error);
-            return {error: 'Error SER-U-LO'}
+            return {error: 'Error SER-US-LO'}
         }
         // Simulación de autenticación exitosa
     }
     // Método para generar un token JWT
     generateToken(user) {
         const payload = { id: user.id, username: user.username }; // Información que irá en el token
-        const secret = 'your-secret-key'; // Clave secreta (usa variables de entorno para mayor seguridad)
-        const options = { expiresIn: '1h' }; // Tiempo de expiración
+        const secret = process.env.TOKEN; // Clave secreta (usa variables de entorno para mayor seguridad)
+        const options = { expiresIn: '24h' }; // Tiempo de expiración
 
         return jwt.sign(payload, secret, options);
     }
 
     // Método para verificar el token JWT
     verifyToken(token) {
-        const secret = 'your-secret-key'; // Debe coincidir con la clave utilizada al generar el token
+        const secret = process.env.TOKEN; // Debe coincidir con la clave utilizada al generar el token
         try {
             return jwt.verify(token, secret); // Devuelve el payload si es válido
         } catch (error) {
