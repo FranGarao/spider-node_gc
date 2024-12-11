@@ -10,6 +10,7 @@ import userRoute from './routes/users.routes.js';
 import customerRoute from './routes/customer.routes.js';
 import jobRoute from './routes/job.routes.js';
 import invoiceRoute from './routes/invoice.routes.js';
+import saleRoute from './routes/sales.routes.js';
 
 // const server = require('http').Server(app);
 // const io = require('socket.io')(server);
@@ -24,6 +25,7 @@ apiRouter.use('/invoices', invoiceRoute);
 apiRouter.use('/users', userRoute);
 apiRouter.use('/customers', customerRoute);
 apiRouter.use('/jobs', jobRoute);
+apiRouter.use('/sales', saleRoute);
 
 app.use('/api', apiRouter);
 
