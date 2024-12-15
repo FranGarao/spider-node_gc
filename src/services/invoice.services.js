@@ -1,8 +1,11 @@
+import InvoiceJobs from "../db/models/invoiceJob.js";
 import Invoice from "../db/models/invoice.model.js";
+import InvoiceWithJobs from "../db/views/invoiceWithJobs.js";
+import {formatInvoice, formatInvoices} from '../helpers/invoices.helper.js'
 export default class InvoiceService {
     async getAll(){
         try {
-            const invoices = await Invoice.findAll();
+            const invoices = formatInvoices(await InvoiceWithJobs.findAll());
             return invoices ? invoices : [];
         } catch (error) {
             console.log(error);
@@ -11,17 +14,27 @@ export default class InvoiceService {
 
     async getById(id){
         try {
-            const invoice = await Invoice.findByPk(id);
+            const invoice = formatInvoice(await InvoiceWithJobs.findByPk(id));
             return invoice ? invoice : null;
         } catch (error) {
             console.log(error);
-            
         }
     }
 
     async create(invoice){
         try {
+            console.log({invoice});
+            // return
             const newInvoice = await Invoice.create(invoice);
+            let jobs = [];
+            // para giaradar registros en la tabla eintermedia, contar la cantidad de trabajos qu ese envian, por ejemplo 6, en ese caso hacemos un for en el que se guarden registros y le pasamos como variable el id del trabajo para que no haya registros repetidos
+            while (invoice.jobs.lenght) {
+
+                await InvoiceJobs.create(invoice)
+            }
+            if (invoice.jobs.length > 1) 
+            InvoiceJobs.create(invoice)
+            // await InvoiceJobs.create()
             return newInvoice ? newInvoice : null;
         } catch (error) {
             console.log(error);
@@ -30,10 +43,8 @@ export default class InvoiceService {
     }
 
     async update(id, invoice){
-        try {
-            console.log({ id, invoice });
-        
-            const [affectedRows] = await Invoice.update(invoice, { where: { id } });
+        try {        
+            const [affectedRows] = await InvoiceWithJobs.update(invoice, { where: { id } });
             console.log({ affectedRows });
         
             if (affectedRows === 0) {
@@ -42,7 +53,7 @@ export default class InvoiceService {
             }
         
             // Si deseas devolver la factura actualizada
-            const updatedInvoice = await Invoice.findByPk(id);
+            const updatedInvoice = await InvoiceWithJobs.findByPk(id);
             console.log({ updatedInvoice });
         
             return updatedInvoice;
@@ -53,7 +64,7 @@ export default class InvoiceService {
     }
     async getByStatus(status) {
         try {
-            const invoices = await Invoice.findAll({ where: { status } });
+            const invoices = await InvoiceWithJobs.findAll({ where: { status } });
             return invoices ? invoices : null;
         } catch (error) {
             console.log(error);

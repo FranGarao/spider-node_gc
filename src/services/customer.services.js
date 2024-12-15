@@ -3,7 +3,6 @@ export default class CustomerService {
     async getAll() {
         try {
             const customers = await Customer.findAll();
-            console.log(customers);
             
             return customers ? customers : [];
         } catch (error) {

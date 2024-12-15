@@ -17,8 +17,6 @@ export default class UserController {
         }
     }
     logout(req, res) {
-        console.log("chuchu");
-        
         userService.clearCookies();
         res.status(200).json({ message: "Logout successful" });
     }

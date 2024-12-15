@@ -51,7 +51,6 @@ export default class UserService {
         });
     }
     clearCookies(res) {
-        console.log("HOLA");
         
         res.clearCookie('authToken', {
             httpOnly: true, // Debe coincidir con la configuración al establecer la cookie

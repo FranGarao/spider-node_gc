@@ -4,7 +4,7 @@ import cors from 'cors';
 
 const app = express();
 dotenv.config();
-const port = process.env.PORT || 1234;
+const PORT = process.env.PORT || 1234;
 
 // Configurar CORS
 const corsOptions = {
@@ -42,6 +42,6 @@ app.use('/api', apiRouter);
 
 
 
-app.listen(port, () => {
-    console.log(`Server running in  http://localhost:${port}`);
+app.listen(PORT, () => {
+    console.log(`Server running in  http://localhost:${PORT}`);
 });

@@ -5,20 +5,7 @@ export default class InvoiceController {
         try {
             let invoices = await invoiceService.getAll();
             
-            invoices = invoices.map((invoice) => {
-                return {
-                    id: invoice.id,
-                    customerId: invoice.customer_id,
-                    deliveryDate: invoice.delivery_date,
-                    phone: invoice.phone,
-                    total: invoice.total_price,
-                    deposit: invoice.deposit,
-                    status: invoice.status,
-                    // created_at: invoice.created_at,
-                    // updated_at: invoice.updated_at,
-                };
-            });
-
+            
             invoices ? res.status(200).json({ message: "Listado de facturas", invoices }) :
             res.status(500).json({ message: "No se encontraron facturas" });
         } catch (error) {
@@ -61,7 +48,6 @@ export default class InvoiceController {
                 res.status(500).json({ message: "No se pudo actualizar la factura" });
                 return;
             }
-            console.log({invoice});
             
             res.status(200).json({ message: "Factura actualizada", invoice });
         } catch (error) {
