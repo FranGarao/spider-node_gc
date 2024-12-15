@@ -23,22 +23,17 @@ export default class InvoiceService {
 
     async create(invoice){
         try {
-            console.log({invoice});
-            // return
             const newInvoice = await Invoice.create(invoice);
-            let jobs = [];
-            // para giaradar registros en la tabla eintermedia, contar la cantidad de trabajos qu ese envian, por ejemplo 6, en ese caso hacemos un for en el que se guarden registros y le pasamos como variable el id del trabajo para que no haya registros repetidos
-            while (invoice.jobs.lenght) {
-
-                await InvoiceJobs.create(invoice)
-            }
-            if (invoice.jobs.length > 1) 
-            InvoiceJobs.create(invoice)
-            // await InvoiceJobs.create()
+            for (let i = 0; i < invoice.jobs.length; i++) {
+                await InvoiceJobs.create({
+                    invoice_id: newInvoice?.id,
+                    job_id: invoice.jobs[i],
+                    quantity: 1
+                })
+            };
             return newInvoice ? newInvoice : null;
         } catch (error) {
             console.log(error);
-            
         }
     }
 
