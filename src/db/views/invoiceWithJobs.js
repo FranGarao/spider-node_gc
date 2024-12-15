@@ -12,6 +12,9 @@ const InvoiceWithJobs = sequelize.define('InvoiceWithJobs', {
   delivery_date: {
     type: DataTypes.STRING,
   },
+  phone: {
+    type: DataTypes.STRING,
+  },
   total_price: {
     type: DataTypes.DECIMAL(10, 2),
   },
