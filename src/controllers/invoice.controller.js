@@ -45,7 +45,7 @@ export default class InvoiceController {
         
             const invoice = await invoiceService.update(id, req.body);
             if (!invoice) {
-                res.status(500).json({ message: "No se pudo actualizar la factura" });
+                res.status(204).json({ message: "No se pudo actualizar la factura" });
                 return;
             }
             

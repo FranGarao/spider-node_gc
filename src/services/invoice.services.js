@@ -25,7 +25,7 @@ export default class InvoiceService {
         try {
             const newInvoice = await Invoice.create(invoice);
             invoice.jobs.forEach(async (job, i) => {
-                await InvoiceJobs.create({
+                await InvoiceJob.create({
                     invoice_id: newInvoice?.id,
                     job_id: invoice.jobs[i],
                     quantity: 1
@@ -74,7 +74,9 @@ export default class InvoiceService {
             
             const [affectedRows] = await Invoice.update(invoice, { where: { id } });
             if (affectedRows === 0) return null;
-        
+            const test = await Invoice.findByPk(id);
+            console.log({ test: test.dataValues, invoice });
+            
             const updatedInvoice = await InvoiceWithJobs.findByPk(id);
         
             return updatedInvoice;
