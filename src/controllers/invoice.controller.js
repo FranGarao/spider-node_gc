@@ -3,7 +3,9 @@ const invoiceService = new InvoiceService();
 export default class InvoiceController {
     async getAll(req, res) {
         try {
-            const invoices = await invoiceService.getAll();
+            let invoices = await invoiceService.getAll();
+            
+            
             invoices ? res.status(200).json({ message: "Listado de facturas", invoices }) :
             res.status(500).json({ message: "No se encontraron facturas" });
         } catch (error) {
@@ -43,10 +45,9 @@ export default class InvoiceController {
         
             const invoice = await invoiceService.update(id, req.body);
             if (!invoice) {
-                res.status(500).json({ message: "No se pudo actualizar la factura" });
+                res.status(204).json({ message: "No se pudo actualizar la factura" });
                 return;
             }
-            console.log({invoice});
             
             res.status(200).json({ message: "Factura actualizada", invoice });
         } catch (error) {
@@ -64,5 +65,16 @@ export default class InvoiceController {
             console.log(error);
             res.status(500).json({ message: "Error CON-JOB-BYS" });
         }
+    }
+    mapInvoice(data) {
+        return {
+            id: data.id,
+            customerId: data.customer_id,
+            deliveryDate: data.delivery_date,
+            deposit: parseFloat(data.deposit),
+            phone: data.phone,
+            status: data.status,
+            totalPrice: parseFloat(data.total_price)
+        };
     }
 }

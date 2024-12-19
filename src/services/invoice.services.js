@@ -1,8 +1,11 @@
+import InvoiceJob from "../db/models/invoiceJob.js";
 import Invoice from "../db/models/invoice.model.js";
+import InvoiceWithJobs from "../db/views/invoiceWithJobs.js";
+import {formatInvoice, formatInvoices} from '../helpers/invoices.helper.js'
 export default class InvoiceService {
     async getAll(){
         try {
-            const invoices = await Invoice.findAll();
+            const invoices = formatInvoices(await InvoiceWithJobs.findAll());
             return invoices ? invoices : [];
         } catch (error) {
             console.log(error);
@@ -11,39 +14,70 @@ export default class InvoiceService {
 
     async getById(id){
         try {
-            const invoice = await Invoice.findByPk(id);
+            const invoice = formatInvoice(await InvoiceWithJobs.findByPk(id));
             return invoice ? invoice : null;
         } catch (error) {
             console.log(error);
-            
         }
     }
 
     async create(invoice){
         try {
             const newInvoice = await Invoice.create(invoice);
+            invoice.jobs.forEach(async (job, i) => {
+                await InvoiceJob.create({
+                    invoice_id: newInvoice?.id,
+                    job_id: invoice.jobs[i],
+                    quantity: 1
+                })
+            });
             return newInvoice ? newInvoice : null;
         } catch (error) {
             console.log(error);
-            
         }
     }
 
     async update(id, invoice){
-        try {
-            console.log({ id, invoice });
-        
-            const [affectedRows] = await Invoice.update(invoice, { where: { id } });
-            console.log({ affectedRows });
-        
-            if (affectedRows === 0) {
-                console.log(`No se encontró una factura con id ${id} o no hubo cambios.`);
-                return null;
+        try {        
+              // Si hay trabajos en la solicitud, manejamos la lógica de actualización
+              if (invoice.jobs) {
+                // Obtener todos los trabajos actuales asociados al comprobante
+                const invoiceJobs = await InvoiceJob.findAll({ where: { invoice_id: id } });
+                
+                // Convertimos los arrays a conjuntos para facilitar comparaciones
+                const currentJobIds = invoiceJobs.map(job => job.job_id); // IDs actuales en la tabla
+                const newJobIds = invoice.jobs; // IDs enviados en la solicitud
+                
+                const jobsToDelete = currentJobIds.filter(jobId => !newJobIds.includes(jobId));
+                const jobsToAdd = newJobIds.filter(jobId => !currentJobIds.includes(jobId));
+                console.log(jobsToDelete, jobsToAdd);   
+
+                if (jobsToDelete.length) {
+                    await InvoiceJob.destroy({
+                        where: {
+                            invoice_id: id,
+                            job_id: jobsToDelete // Eliminar solo los IDs identificados
+                        }
+                    })
+                }
+                
+                if (jobsToAdd.length) {
+                    const newRecords = jobsToAdd.map(jobId => ({
+                        invoice_id: id,
+                        job_id: jobId,
+                        quantity: 1
+                    }));
+                    await InvoiceJob.bulkCreate(newRecords); // Inserción masiva de los nuevos trabajos
+                }
+                console.log("Actualización completada: trabajos eliminados y agregados.");
             }
-        
-            // Si deseas devolver la factura actualizada
-            const updatedInvoice = await Invoice.findByPk(id);
-            console.log({ updatedInvoice });
+            
+            const [affectedRows] = await Invoice.update(invoice, { where: { id } });
+            if (affectedRows === 0) return null;
+            const test = await Invoice.findByPk(id);
+            console.log({ test: test.dataValues, invoice });
+            
+            const updatedInvoice = await InvoiceWithJobs.findByPk(id);
         
             return updatedInvoice;
         } catch (error) {
@@ -53,7 +87,7 @@ export default class InvoiceService {
     }
     async getByStatus(status) {
         try {
-            const invoices = await Invoice.findAll({ where: { status } });
+            const invoices = formatInvoices(await InvoiceWithJobs.findAll({ where: { status } }));
             return invoices ? invoices : null;
         } catch (error) {
             console.log(error);

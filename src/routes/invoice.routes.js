@@ -10,7 +10,7 @@ route.get('/:id', invoiceController.getById);
 
 route.get('/status/:status', invoiceController.getByStatus);
 
-route.post('/:id', invoiceController.create);
+route.post('/', invoiceController.create);
 
 route.put('/:id', invoiceController.update);
 

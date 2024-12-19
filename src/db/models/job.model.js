@@ -1,5 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../instance/connection.js';
+import InvoiceJob from './invoiceJob.js';
+
 
 const Job = sequelize.define('Job', {
   id: {
@@ -20,4 +22,11 @@ const Job = sequelize.define('Job', {
   timestamps: false,   // Activa createdAt y updatedAt
 });
 
+Job.associate = function(models) {
+  Job.belongsToMany(models.Invoice, {
+    through: InvoiceJob,    // Tabla intermedia
+    foreignKey: 'job_id',    // Llave foránea de Job
+    otherKey: 'invoice_id', // Llave foránea de Invoice
+  });
+};
 export default Job;
