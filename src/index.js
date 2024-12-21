@@ -5,10 +5,11 @@ import cors from 'cors';
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 1234;
-
+const HOST = process.env.HOST || 'localhost';
 // Configurar CORS
 const corsOptions = {
-    origin: 'http://localhost:4200', // Cambia a la URL de tu app Angular en producción
+    origin: 'http://192.168.0.6:4200', // Cambia a la URL de tu app Angular en producción
+    // origin: 'http://192.168.0.6:4200', // Cambia a la URL de tu app Angular en producción
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true // Si necesitas enviar cookies o autorizaciones
 };
@@ -42,6 +43,6 @@ app.use('/api', apiRouter);
 
 
 
-app.listen(PORT, () => {
-    console.log(`Server running in  http://localhost:${PORT}`);
+app.listen(PORT, HOST, () => {
+    console.log(`Server running in  http://${HOST}:${PORT}`);
 });

@@ -1,27 +1,23 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../instance/connection.js';
 
-const Sale = sequelize.define('Sale', {
+const Product = sequelize.define('Product', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  product_id: {
-    type: DataTypes.INTEGER,
+  name: {
+    type: DataTypes.STRING,
     allowNull: false,
   },
-  customer_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  payment_id: {
-    type: DataTypes.INTEGER,
+  price: {
+    type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
   },
 }, {
-  tableName: 'sales', // Nombre de la tabla en la base de datos
+  tableName: 'products', // Nombre de la tabla en la base de datos
   timestamps: false,   // Activa createdAt y updatedAt
 });
 
-export default Sale;
+export default Product;
