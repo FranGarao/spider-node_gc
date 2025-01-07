@@ -8,7 +8,8 @@ export default class UserController {
                 return;
             }
             const result = await userService.login(res, {username: req?.body?.username, password: req?.body?.password});
-
+            console.log(result);
+            
             !result ? res.status(401).json({ message: "Unauthorized" }) : 
             res.status(200).json({ message: "Login successful", user: result });
         } catch (error) {

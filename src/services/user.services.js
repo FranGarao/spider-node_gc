@@ -15,8 +15,7 @@ export default class UserService {
             this.setCookies(res, token);
             return { username: user.username, authenticated: true };
         } catch (error) {
-            console.log(error);
-            return {error: 'Error SER-US-LO'}
+            return null
         }
         // Simulación de autenticación exitosa
     }
