@@ -4,8 +4,6 @@ export default class InvoiceController {
     async getAll(req, res) {
         try {
             let invoices = await invoiceService.getAll();
-            
-            
             invoices ? res.status(200).json({ message: "Listado de facturas", invoices }) :
             res.status(500).json({ message: "No se encontraron facturas" });
         } catch (error) {
@@ -26,8 +24,13 @@ export default class InvoiceController {
     }
     async create(req, res){
         try {
+            console.log(req.body);
+            
             if (!req.body) return;
-            const newInvoice = await invoiceService.create(req.body);
+            const invoice = {
+                
+            }
+            const newInvoice = await invoiceService.create(req.body.invoice, req.body.paymentMethod);
             if (!newInvoice) {
                 res.status(500).json({ message: "No se pudo crear la factura" });
                 return;

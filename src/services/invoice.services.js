@@ -1,5 +1,7 @@
 import InvoiceJob from "../db/models/invoiceJob.js";
 import Invoice from "../db/models/invoice.model.js";
+import Job from "../db/models/job.model.js";
+import Payment from "../db/models/payments.model.js";
 import InvoiceWithJobs from "../db/views/invoiceWithJobs.js";
 import {formatInvoice, formatInvoices} from '../helpers/invoices.helper.js'
 export default class InvoiceService {
@@ -21,19 +23,34 @@ export default class InvoiceService {
         }
     }
 
-    async create(invoice){
+    async create(invoice, paymentMethod){
         try {
+            console.log({test: invoice});
+            invoice.total_price = invoice.total
+            invoice.delivery_date = invoice.deliveryDate
+            const today = new Date().toISOString().slice(0, 10);
             const newInvoice = await Invoice.create(invoice);
+            await Payment.create({invoice_id: newInvoice.id, payment_method_id: paymentMethod.id, mount: invoice.deposit, payment_date: today});
             invoice.jobs.forEach(async (job, i) => {
-                await InvoiceJob.create({
+                if (!Number(job)) {
+                   const newJob =  await Job.create(job);
+                   console.log({newJob});
+                   await InvoiceJob.create({
                     invoice_id: newInvoice?.id,
-                    job_id: invoice.jobs[i],
+                    job_id: newJob?.id,
                     quantity: 1
                 })
-            });
+                } else {
+                    await InvoiceJob.create({
+                        invoice_id: newInvoice?.id,
+                        job_id: invoice.jobs[i],
+                        quantity: 1
+                    })
+                }
+                });
             return newInvoice ? newInvoice : null;
         } catch (error) {
-            console.log(error);
+            console.log({XDDDD: error});
         }
     }
 

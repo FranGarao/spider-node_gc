@@ -23,7 +23,7 @@ import jobRoute from './routes/job.routes.js';
 import invoiceRoute from './routes/invoice.routes.js';
 import saleRoute from './routes/sales.routes.js';
 import productRoute from './routes/products.routes.js';
-
+import paymentRoute from './routes/payments.routes.js';
 // const server = require('http').Server(app);
 // const io = require('socket.io')(server);
 // app.use(express.static(__dirname + '/public'));
@@ -39,6 +39,7 @@ apiRouter.use('/customer', customerRoute);
 apiRouter.use('/job', jobRoute);
 apiRouter.use('/sale', saleRoute);
 apiRouter.use('/product', productRoute);
+apiRouter.use('/payment', paymentRoute);
 
 app.use('/api', apiRouter);
 
