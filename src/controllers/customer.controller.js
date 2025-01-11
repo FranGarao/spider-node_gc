@@ -17,6 +17,8 @@ export default class CustomerController {
     async getById(req,res){
         try {
             const id = req.params.id;
+            console.log(id);
+            
             const customer = await customerService.getById(id);
             if (!customer) {
                 res.status(500).json({ message: "No se encontraron usuarios" });

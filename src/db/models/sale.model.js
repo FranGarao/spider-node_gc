@@ -7,16 +7,23 @@ const Sale = sequelize.define('Sale', {
     primaryKey: true,
     autoIncrement: true,
   },
-  product_id: {
-    type: DataTypes.INTEGER,
+  product_name: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+  },
+  product_price: {
+    type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
   },
   customer_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
   },
   payment_id: {
     type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  sale_date: {
+    type: DataTypes.DATE,
     allowNull: false,
   },
 }, {

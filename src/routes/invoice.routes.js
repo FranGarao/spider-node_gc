@@ -10,9 +10,13 @@ route.get('/:id', invoiceController.getById);
 
 route.get('/status/:status', invoiceController.getByStatus);
 
+route.put('/status/:id/:status', invoiceController.changeStatus);
+
 route.post('/', invoiceController.create);
 
 route.put('/:id', invoiceController.update);
+
+route.delete('/:id', invoiceController.delete);
 
 
 export default route;

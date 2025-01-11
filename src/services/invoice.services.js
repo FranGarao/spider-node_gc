@@ -57,6 +57,7 @@ export default class InvoiceService {
     async update(id, invoice){
         try {        
               // Si hay trabajos en la solicitud, manejamos la lógica de actualización
+              
               if (invoice.jobs) {
                 // Obtener todos los trabajos actuales asociados al comprobante
                 const invoiceJobs = await InvoiceJob.findAll({ where: { invoice_id: id } });
@@ -88,12 +89,9 @@ export default class InvoiceService {
                 }
                 console.log("Actualización completada: trabajos eliminados y agregados.");
             }
-            
+
             const [affectedRows] = await Invoice.update(invoice, { where: { id } });
             if (affectedRows === 0) return null;
-            const test = await Invoice.findByPk(id);
-            console.log({ test: test.dataValues, invoice });
-            
             const updatedInvoice = await InvoiceWithJobs.findByPk(id);
         
             return updatedInvoice;
@@ -102,10 +100,30 @@ export default class InvoiceService {
             throw error;
         }
     }
+    async delete(id){
+        try {
+            const invoice = await Invoice.destroy({ where: { id } });
+            return invoice ? invoice : null;
+        } catch (error) {
+            console.log(error);
+        }
+    }
     async getByStatus(status) {
         try {
             const invoices = formatInvoices(await InvoiceWithJobs.findAll({ where: { status } }));
             return invoices ? invoices : null;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    async changeStatus (id, status) {
+        try {
+            if (!id || !status) return null;
+            const invoice = await Invoice.findByPk(id);
+            console.log({invoice});
+            if (!invoice) return null;
+            const updatedInvoice = await Invoice.update({ status }, { where: { id } });
+            return updatedInvoice;
         } catch (error) {
             console.log(error);
         }

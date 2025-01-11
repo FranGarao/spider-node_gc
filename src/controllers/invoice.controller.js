@@ -58,6 +58,19 @@ export default class InvoiceController {
             res.status(500).json({ message: "Error CON-INV-UPD" });
         }
     }
+
+    async delete(req, res){
+        try {
+            if (!req.params.id) return;
+            const id = req.params.id;
+            const invoice = await invoiceService.delete(id);
+            invoice ? res.status(200).json({ message: "Factura eliminada", invoice }) :
+            res.status(500).json({ message: "No se pudo eliminar la factura" });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: "Error CON-INV-DEL" });
+        }
+    }
     async getByStatus(req, res){
         try {
             const status = req.params.status;
@@ -79,5 +92,17 @@ export default class InvoiceController {
             status: data.status,
             totalPrice: parseFloat(data.total_price)
         };
+    }
+    async changeStatus (req, res) {
+        try {
+            if (!req.params.id || !req.params.status) return;
+            const {id, status} = req.params;
+            const invoice = await invoiceService.changeStatus(id, status);
+            invoice ? res.status(200).json({ message: "Factura actualizada", invoice }) :
+            res.status(500).json({ message: "No se pudo actualizar la factura" });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: "Error CON-INV-UPD" });
+        }
     }
 }
