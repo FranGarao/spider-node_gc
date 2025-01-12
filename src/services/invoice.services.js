@@ -4,6 +4,8 @@ import Job from "../db/models/job.model.js";
 import Payment from "../db/models/payments.model.js";
 import InvoiceWithJobs from "../db/views/invoiceWithJobs.js";
 import {formatInvoice, formatInvoices} from '../helpers/invoices.helper.js'
+import PaymentService from "./payment.services.js";
+const paymentService = new PaymentService();
 export default class InvoiceService {
     async getAll(){
         try {
@@ -119,8 +121,10 @@ export default class InvoiceService {
     async changeStatus (id, status) {
         try {
             if (!id || !status) return null;
+            if (status === "Entregado") {
+                await paymentService.createPayment(id);
+            }
             const invoice = await Invoice.findByPk(id);
-            console.log({invoice});
             if (!invoice) return null;
             const updatedInvoice = await Invoice.update({ status }, { where: { id } });
             return updatedInvoice;

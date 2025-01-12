@@ -28,4 +28,14 @@ export default class PaymentController {
             res.status(500).json({ error: 'Internal server error' });
         }
     }
+
+    async getAllWithDetails(req, res) {
+        try {
+            const payments = await paymentService.getAllWithDetails();
+            res.status(200).json(payments);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    }
 }

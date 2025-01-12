@@ -9,4 +9,6 @@ route.get('/methods/:id', paymentController.getMethodById);
 
 route.get("/", paymentController.getAll);
 
+route.get("/details", paymentController.getAllWithDetails);
+
 export default route;
