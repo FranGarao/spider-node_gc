@@ -2,6 +2,7 @@ import Payment from '../db/models/payments.model.js'
 import PaymentMethod from '../db/models/paymentMethods.model.js'
 import PaymentDetails from '../db/views/paymentDetails.js';
 import Invoice from '../db/models/invoice.model.js';
+import InvoiceWithJobs from '../db/views/invoiceWithJobs.js';
 export default class PaymentService {
     async getAll() {
         try {
@@ -42,19 +43,45 @@ export default class PaymentService {
             return null;            
         }
     }
-    async createPayment(id) {
+    async createPayment(payment) {
         try {
-            console.log({id});
-            const invoice = await Invoice.findByPk(id);
-            console.log({invoice});
-            const balance = invoice.total_price - invoice.deposit;
-            //TODO: agregar metodo de pago en alerta de terminar 
+            if (!payment.balance) {
+                payment = await InvoiceWithJobs.findByPk(payment);
+            }
             const today = new Date().toISOString().slice(0, 10);
-            await Payment.create({invoice_id: invoice.id, payment_method_id: paymentMethod.id, mount: invoice.balance, payment_date: today});
+            await Payment.create({invoice_id: payment.id, payment_method_id: payment.paymentMethodId, mount: payment.balance, payment_date: today});
             
         } catch (error) {
-            console.log(error);
-            
+            return null;            
         }
     }
+
+    processPayment = async ({ invoiceId, mount, paymentMethodId, paymentDate }) => {
+        try {
+          // Aquí puedes interactuar con tu base de datos o cualquier otra lógica
+          console.log('Processing payment:', {
+            invoiceId,
+            mount,
+            paymentMethodId,
+            paymentDate,
+          });
+      
+          // Simula la respuesta de éxito
+          return {
+            status: 'success',
+            message: `Payment processed for invoice ${invoiceId}`,
+            details: {
+              invoiceId,
+              mount,
+              paymentMethodId,
+              paymentDate,
+            },
+          };
+        } catch (error) {
+          console.error('Error in PaymentService:', error);
+          throw new Error('Payment processing failed');
+        }
+      };
 }
+
+

@@ -5,6 +5,7 @@ import Payment from "../db/models/payments.model.js";
 import InvoiceWithJobs from "../db/views/invoiceWithJobs.js";
 import {formatInvoice, formatInvoices} from '../helpers/invoices.helper.js'
 import PaymentService from "./payment.services.js";
+import QRCode from 'qrcode';
 const paymentService = new PaymentService();
 export default class InvoiceService {
     async getAll(){
@@ -128,6 +129,17 @@ export default class InvoiceService {
             if (!invoice) return null;
             const updatedInvoice = await Invoice.update({ status }, { where: { id } });
             return updatedInvoice;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async generateQRCode(invoice) {
+        try {
+            const routeUrl = `http://192.168.0.6:4321/api/payment/create?invoice_id=${invoice.id}&mount=${invoice.balance}&payment_method_id=1&payment_date=${new Date().toISOString().slice(0, 10)}`;
+
+            const qrCode = await QRCode.toDataURL(routeUrl);
+            return qrCode;
         } catch (error) {
             console.log(error);
         }

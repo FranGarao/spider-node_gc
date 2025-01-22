@@ -18,5 +18,7 @@ route.put('/:id', invoiceController.update);
 
 route.delete('/:id', invoiceController.delete);
 
+route.get('/qr/:id', invoiceController.generateQRCode);
+
 
 export default route;

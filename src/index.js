@@ -24,6 +24,8 @@ import invoiceRoute from './routes/invoice.routes.js';
 import saleRoute from './routes/sales.routes.js';
 import productRoute from './routes/products.routes.js';
 import paymentRoute from './routes/payments.routes.js';
+import googleSheetsRoute from './routes/googleSheets.routes.js';
+import { google } from 'googleapis';
 // const server = require('http').Server(app);
 // const io = require('socket.io')(server);
 // app.use(express.static(__dirname + '/public'));
@@ -40,12 +42,13 @@ apiRouter.use('/job', jobRoute);
 apiRouter.use('/sale', saleRoute);
 apiRouter.use('/product', productRoute);
 apiRouter.use('/payment', paymentRoute);
+apiRouter.use('/sheets', googleSheetsRoute);
 
 app.use('/api', apiRouter);
 
 
 
 
-app.listen(PORT, HOST, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running in  http://${HOST}:${PORT}`);
 });

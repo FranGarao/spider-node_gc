@@ -105,4 +105,17 @@ export default class InvoiceController {
             res.status(500).json({ message: "Error CON-INV-UPD" });
         }
     }
+
+    async generateQRCode(req, res) {
+        try {
+            if (!req.params.id) return;
+            const id = req.params.id;
+            const qrCode = await invoiceService.generateQRCode(id);
+            qrCode ? res.status(200).json({ message: "QR Generado", qrCode }) :
+            res.status(500).json({ message: "No se encontraron facturas" });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: "Error CON-INV-GET" });
+        }
+    }
 }

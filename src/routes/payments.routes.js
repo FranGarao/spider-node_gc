@@ -11,4 +11,8 @@ route.get("/", paymentController.getAll);
 
 route.get("/details", paymentController.getAllWithDetails);
 
+route.post("/", paymentController.createPayment);
+
+route.get('/create', paymentController.createByQr);
+ 
 export default route;

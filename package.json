@@ -17,8 +17,10 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "getenv": "^1.0.0",
+    "googleapis": "^144.0.0",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.5",
+    "qrcode": "^1.5.4",
     "sequelize": "^6.37.5",
     "sequelize-cli": "^6.6.2"
   }
