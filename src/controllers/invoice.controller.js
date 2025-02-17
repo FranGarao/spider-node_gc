@@ -24,12 +24,7 @@ export default class InvoiceController {
     }
     async create(req, res){
         try {
-            console.log(req.body);
-            
             if (!req.body) return;
-            const invoice = {
-                
-            }
             const newInvoice = await invoiceService.create(req.body.invoice, req.body.paymentMethod);
             if (!newInvoice) {
                 res.status(500).json({ message: "No se pudo crear la factura" });

@@ -13,7 +13,9 @@ const InvoiceJob = sequelize.define('InvoiceJob', {
   },
   job_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+  },
+  job: {
+    type: DataTypes.STRING(255),
   },
   quantity: {
     type: DataTypes.INTEGER,

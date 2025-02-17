@@ -8,7 +8,7 @@ export const formatInvoice = (invoice) => {
     deposit: parseFloat(invoice.deposit).toFixed(2),
     balance: (invoice.total_price - invoice.deposit).toFixed(2), // Calcula saldo pendiente
     status: invoice.status.toUpperCase(), // Formatea el estado en mayúsculas
-    job: invoice.job_names || [], // Incluye los trabajos si están disponibles
+    job: invoice.job_names || invoice.jobs ||[], // Incluye los trabajos si están disponibles
   };
 };
 // id: invoice.invoice_id,

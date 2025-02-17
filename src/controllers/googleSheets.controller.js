@@ -24,16 +24,16 @@ export default class GoogleSheetsController {
 
     // Método para leer datos desde la hoja
     async readSheet(req, res) {
-        const { range } = req.query;
+        // const { range } = req.query;
         
         // Validar los datos de entrada
-        if (!range) {
-            return res.status(400).json({ error: 'El rango es obligatorio para leer datos.' });
-        }
+        // if (!range) {
+        //     return res.status(400).json({ error: 'El rango es obligatorio para leer datos.' });
+        // }
 
         try {
             // Llama al método de servicio para leer datos desde la hoja
-            const data = await googleSheetsService.readFromSheet(range);
+            const data = await googleSheetsService.readFromSheet();
             res.status(200).json({ message: 'Datos leídos correctamente.', data });
         } catch (error) {
             console.error('Error al leer Google Sheets:', error);

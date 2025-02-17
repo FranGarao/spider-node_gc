@@ -1,6 +1,6 @@
 import Payment from '../db/models/payments.model.js'
 import PaymentMethod from '../db/models/paymentMethods.model.js'
-import PaymentDetails from '../db/views/paymentDetails.js';
+import PaymentDetails from '../db/views/paymentDetails2.js';
 import Invoice from '../db/models/invoice.model.js';
 import InvoiceWithJobs from '../db/views/invoiceWithJobs.js';
 export default class PaymentService {
@@ -33,7 +33,6 @@ export default class PaymentService {
 
     async getAllWithDetails() {
         try {
-
             const payments = await PaymentDetails.findAll();
             console.log({payments});
             
