@@ -7,12 +7,10 @@ const authMiddleware = (req, res, next) => {
     
     // Verifica que el header Authorization exista y siga el esquema "Bearer <token>"
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ message: 'Token no proporcionado o formato inválido' });
+      return res.status(401).json({ message: 'ERROR' });
     }
-  console.log({authHeader});
   
     const token = authHeader.split(' ')[1];
-  console.log({token});
   
     try {
       // Verifica el token usando la clave secreta
@@ -22,7 +20,7 @@ const authMiddleware = (req, res, next) => {
       next();
     } catch (error) {
         
-      return res.status(401).json({ message: 'Token inválido', error: error.message });
+      return res.status(401).json({ message: 'ERROR', error: error.message });
     }
   };
 

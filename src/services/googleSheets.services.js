@@ -5,7 +5,8 @@ import { es } from 'date-fns/locale';
 import { filterLatestProducts } from '../helpers/filterLatestServices.helper.js';
 
 // Ruta al archivo JSON de credenciales
-const CREDENTIALS_PATH = path.resolve('src/config/google-credentials.json');
+// const CREDENTIALS_PATH = path.resolve('src/config/google-credentials.json');
+
 
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 
@@ -18,10 +19,10 @@ export default class GoogleSheetsService {
     this.previousData = []; // Para guardar el estado previo de los datos
   }
 
-  async authenticate() {
+  async authenticate(CREDENTIALS) {
     if (!this.authClient) {
       const auth = new google.auth.GoogleAuth({
-        keyFile: CREDENTIALS_PATH,
+        credentials: CREDENTIALS,
         scopes: SCOPES,
       });
       this.authClient = await auth.getClient();
@@ -50,7 +51,20 @@ export default class GoogleSheetsService {
   }
 
   async readFromSheet() {
-    const authClient = await this.authenticate();
+    const CREDENTIALS = {
+      type: process.env.GOOGLE_TYPE,
+      project_id: process.env.GOOGLE_PROJECT_ID,
+      private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
+      private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      client_email: process.env.GOOGLE_CLIENT_EMAIL,
+      client_id: process.env.GOOGLE_CLIENT_ID,
+      auth_uri: process.env.GOOGLE_AUTH_URI,
+      token_uri: process.env.GOOGLE_TOKEN_URI,
+      auth_provider_x509_cert_url: process.env.GOOGLE_AUTH_PROVIDER,
+      client_x509_cert_url: process.env.GOOGLE_CLIENT_CERT,
+      universe_domain: process.env.GOOGLE_UNIVERSE_DOMAIN,
+    };
+    const authClient = await this.authenticate(CREDENTIALS);
     const sheets = google.sheets({ version: 'v4', auth: authClient });
 
     try {
