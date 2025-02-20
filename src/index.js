@@ -1,14 +1,15 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-
+import cookieParser from 'cookie-parser';
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 1234;
 const HOST = process.env.HOST || 'localhost';
 // Configurar CORS
 const corsOptions = {
-    origin: 'http://82.29.61.148:4200', // Cambia a la URL de tu app Angular en producción
+    origin: 'http://82.29.61.148:4200', 
+    // origin: 'http://localhost:4200', 
     // origin: 'http://192.168.0.6:4200', // Cambia a la URL de tu app Angular en producción
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true // Si necesitas enviar cookies o autorizaciones
@@ -31,7 +32,7 @@ import { google } from 'googleapis';
 // app.use(express.static(__dirname + '/public'));
 
 app.use(express.json());
-
+app.use(cookieParser());
 //routes
 const apiRouter = express.Router();
 

@@ -1,17 +1,18 @@
 import express from 'express';
 import JobController from '../controllers/job.controller.js';
+import authMiddleware from '../middlewares/auth.middleware.js';
 
 const route = express.Router();
 const jobController = new JobController();
 
-route.get('/', jobController.getAll);
+route.get('/',authMiddleware, jobController.getAll);
 
-route.get('/:id', jobController.getById);
+route.get('/:id',authMiddleware, jobController.getById);
 
-route.post('/', jobController.create);
+route.post('/',authMiddleware, jobController.create);
 
-route.put('/:id', jobController.update);
+route.put('/:id',authMiddleware, jobController.update);
 
-route.delete('/:id', jobController.delete);
+route.delete('/:id',authMiddleware, jobController.delete);
 
 export default route;

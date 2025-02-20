@@ -13,7 +13,7 @@ export default class UserService {
             const token = this.generateToken(foundUser);
 
             this.setCookies(res, token);
-            return { username: user.username, authenticated: true };
+            return { token: token, authenticated: true };
         } catch (error) {
             return null
         }

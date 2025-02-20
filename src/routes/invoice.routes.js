@@ -1,24 +1,24 @@
 import express from 'express';
 import InvoiceController from '../controllers/invoice.controller.js';
-
+import authMiddleware from '../middlewares/auth.middleware.js';
 const route = express.Router();
 const invoiceController = new InvoiceController();
 
-route.get('/', invoiceController.getAll);
+route.get('/',authMiddleware, invoiceController.getAll);
 
-route.get('/:id', invoiceController.getById);
+route.get('/:id',authMiddleware, invoiceController.getById);
 
-route.get('/status/:status', invoiceController.getByStatus);
+route.get('/status/:status',authMiddleware, invoiceController.getByStatus);
 
-route.put('/status/:id/:status', invoiceController.changeStatus);
+route.put('/status/:id/:status',authMiddleware, invoiceController.changeStatus);
 
-route.post('/', invoiceController.create);
+route.post('/',authMiddleware, invoiceController.create);
 
-route.put('/:id', invoiceController.update);
+route.put('/:id',authMiddleware, invoiceController.update);
 
-route.delete('/:id', invoiceController.delete);
+route.delete('/:id',authMiddleware, invoiceController.delete);
 
-route.get('/qr/:id', invoiceController.generateQRCode);
+route.get('/qr/:id',authMiddleware, invoiceController.generateQRCode);
 
 
 export default route;
