@@ -28,7 +28,7 @@ const SDInvoiceJobs = sequelize.define('SDInvoiceJobs', {
     type: DataTypes.STRING, // O DataTypes.JSON si la vista devuelve un JSON
   },
 }, {
-  tableName: 'SD_invoiceJobs', // Nombre de la vista en la base de datos
+  tableName: 'sd_invoiceJobs', // Nombre de la vista en la base de datos
   timestamps: false,           // No se usan timestamps con vistas
 });
 
