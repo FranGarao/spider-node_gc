@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 1234;
 const HOST = process.env.HOST || 'localhost';
 // Configurar CORS
 const corsOptions = {
-    origin: 'http://82.29.61.148:4200/', // Cambia a la URL de tu app Angular en producción
+    origin: 'http://82.29.61.148:4200', // Cambia a la URL de tu app Angular en producción
     // origin: 'http://192.168.0.6:4200', // Cambia a la URL de tu app Angular en producción
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true // Si necesitas enviar cookies o autorizaciones
