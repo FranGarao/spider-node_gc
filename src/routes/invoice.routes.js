@@ -10,7 +10,7 @@ route.get('/:id',authMiddleware, invoiceController.getById);
 
 route.get('/status/:status',authMiddleware, invoiceController.getByStatus);
 
-route.put('/status/:id/:status',authMiddleware, invoiceController.changeStatus);
+route.put('/status/:id/:status', invoiceController.changeStatus);
 
 route.post('/',authMiddleware, invoiceController.create);
 
